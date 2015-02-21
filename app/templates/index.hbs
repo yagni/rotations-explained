@@ -1,3 +1,8 @@
 <p>Here is some explanatory text that will be displayed throughout the tutorial.</p>
 {{viewport-3d}}
-<button {{action 'test'}}>Boo!</button>
+{{matrix-container matrices=model.matrices}}<p></p>
+{{matrix-4d matrix=model.result allowClose=false}}
+<button {{action 'addmatrix'}}>Add Matrix</button>
+{{#if hasError}}
+<span>Error</span>
+{{/if}}

@@ -3,13 +3,15 @@ import Ember from 'ember';
 /* global THREE */
 
 export default Ember.Component.extend({
-  renderer: {},
-  camera: {},
-  scene: {},
-  backgroundScene: {},
-  controls: {},
-  rotY: 0,
-  doLogicUpdate: true,
+  init : function() {
+    this.renderer = {};
+    this.camera = {};
+    this.scene = {};
+    this.backgroundScene = {};
+    this.controls = {};
+    this.rotY = 0;
+    this.doLogicUpdate = true;
+  },
 
   didInsertElement : function() {
     var color = {
@@ -62,9 +64,10 @@ export default Ember.Component.extend({
 
     var pixelWidth = 333, pixelHeight = 333;
     this.camera = new THREE.PerspectiveCamera( 75, pixelWidth / pixelHeight, 0.1, 1000 );
-    this.camera.position.y = 5;
+    this.camera.position.x = -16;
+    this.camera.position.y = 7;
     this.camera.position.z = 25;
-    this.camera.setLens(50);
+    this.camera.setLens(75);
     //this.camera.matrixAutoUpdate = false;
     this.renderer = new THREE.WebGLRenderer({alpha: false, antialias: true});
     this.renderer.autoClear = false;
