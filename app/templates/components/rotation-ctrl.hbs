@@ -1,0 +1,12 @@
+<button {{action 'toggleMode'}}>Mode</button>
+{{#if allowClose}}
+  <div style="float: right">
+    <button {{action 'close'}}>X</button>
+  </div>
+{{/if}}
+<br>
+{{#if showMatrix}}
+  {{matrix-ctrl matrix=matrix}}
+{{else}}
+  {{angles-ctrl matrix=matrix}}
+{{/if}}

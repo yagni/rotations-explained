@@ -7,7 +7,7 @@ var matrices = Em.A([
     // isFirst is a dirty hack: it's a view-related property,
     // but because Ember doesn't support @first from Handlebars,
     // we have to stick it in here :(
-    isFirst: true,
+    //isFirst: true,
     _matrix: math.matrix([[1, 0, 0],
                           [0, 1, 0],
                           [0, 0, 1]])

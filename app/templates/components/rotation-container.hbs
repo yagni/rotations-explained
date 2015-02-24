@@ -1,0 +1,7 @@
+{{#each matrix in matrices}}
+  {{#if onlyOneMatrix}}
+    {{rotation-ctrl matrix=matrix allowClose=false close="deleteRotation"}}
+  {{else}}
+    {{rotation-ctrl matrix=matrix allowClose=true close="deleteRotation"}}
+  {{/if}}
+{{/each}}
