@@ -4,7 +4,7 @@ module.exports = function(environment) {
   var ENV = {
     modulePrefix: 'rotations-explained',
     environment: environment,
-    baseURL: '/',
+    baseURL: '/rotations-explained',
     locationType: 'auto',
     EmberENV: {
       FEATURES: {
