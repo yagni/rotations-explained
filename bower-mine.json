@@ -1,0 +1,7 @@
+{
+  "name": "rotations-explained",
+  "dependencies": {
+    "three.js": "*",
+    "polymer": "Polymer/polymer#1.0.0"
+  }
+}

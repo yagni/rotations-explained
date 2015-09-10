@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+    <script src="http://cdnjs.cloudflare.com/ajax/libs/three.js/r71/three.js"></script>
+    <script src="http://cdnjs.cloudflare.com/ajax/libs/gsap/1.17.0/TweenMax.min.js"></script>
+    <script src="TrackballControls.js"></script>
+    <script src="viewport-3d.js"></script>
+
+    <link href="http://fonts.googleapis.com/css?family=Lato:100,200,300,400" rel="stylesheet" type="text/css">
+    <link rel="import" href="bower_components/polymer/polymer.html">
+    <link rel="stylesheet" href="rotations-explained.css">
+</head>
+<body onload="init()">
+<h1 class="title">Rotations</h1>
+<p>Here is some explanatory text that will be displayed throughout the tutorial.</p>
+<div id="viewport">
+    <!--{{viewport-3d class="viewport"}} {{rotation-ctrl matrix=model.result allowClose=false editable=false}}-->
+</div>
+<div id="rotation-container">
+    <div id="rotation">
+        <paper-input label="M"></paper-input><paper-input label="M"></paper-input><paper-input label="M"></paper-input><br>
+        <paper-input label="M"></paper-input><paper-input label="M"></paper-input><paper-input label="M"></paper-input><br>
+        <paper-input label="M"></paper-input><paper-input label="M"></paper-input><paper-input label="M"></paper-input>
+    </div>
+</div>
+<p></p>
+<button>Add Rotation</button>
+<!-- if has error
+<span>Error</span>
+-->
+
+</body>
+</html>

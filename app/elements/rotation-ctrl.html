@@ -1,0 +1,78 @@
+<dom-module id="rotation-ctrl">
+  <style>
+    :host {
+      display: block;
+    }
+
+    @media (max-width: 600px) {
+      h1.paper-font-display1 {
+        font-size: 24px;
+      }
+    }
+  </style>
+  <template>
+    <div class="vertical layout">
+      <div class="horizontal layout">
+        <button>Toggle mode</button>
+        <div class="flex"/>
+        <button>x</button>
+      </div>
+      <div id="matrix" style$="{{matrixVisibility}}">
+        <div class="vertical layout">
+          <div class="horizontal layout">
+            <div class="flex matrix-element"><input/></div><div class="flex matrix-element"><input/></div><div class="flex matrix-element"><input/></div><p></p>
+          </div>
+          <div class="horizontal layout">
+            <div class="flex"><input/></div> <div class="flex"><input/></div> <div class="flex"><input/></div><p></p>
+          </div>
+          <div class="horizontal layout">
+            <div class="flex"><input/></div> <div class="flex"><input/></div> <div class="flex"><input/></div><p></p>
+          </div>
+        </div>
+      </div>
+      <div id="angles" style$="{{anglesVisibility}}">
+        <div class="vertical layout">
+          <div class="horizontal layout">
+            <div class="flex">X:<input/></div><div class="flex matrix-element"></div><p></p>
+          </div>
+          <div class="horizontal layout">
+            <div class="flex">Y:<input/></div>
+              <select>
+                <option value="xyz">XYZ</option>
+                <option value="zyz">ZYZ</option>
+              </select>
+            <div class="flex matrix-element"></div><p></p>
+          </div>
+          <div class="horizontal layout">
+            <div class="flex">Z:<input/></div><div class="flex matrix-element"></div><p></p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </template>
+</dom-module>
+<script>
+  (function () {
+    Polymer({
+      is: 'rotation-ctrl',
+      properties: {
+        items: {
+          type: Array,
+          notify: true,
+        },
+        matrixVisibility: 'visibility: hidden',
+        anglesVisibility: 'visible: none'
+      },
+      ready: function() {
+        this.items = [
+          'Responsive Web App boilerplate',
+          'Iron Elements and Paper Elements',
+          'End-to-end Build Tooling (including Vulcanize)',
+          'Unit testing with Web Component Tester',
+          'Routing with Page.js',
+          'Offline support with the Platinum Service Worker Elements'
+        ];
+      }
+    });
+  })();
+</script>
