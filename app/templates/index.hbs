@@ -1,7 +1,6 @@
 <p>Here is some explanatory text that will be displayed throughout the tutorial.</p>
-{{viewport-3d}}
+<div>{{viewport-3d class="viewport"}} {{rotation-ctrl matrix=model.result allowClose=false editable=false}}</div>
 {{rotation-container matrices=model.matrices}}<p></p>
-= {{rotation-ctrl matrix=model.result allowClose=false}}
 <button {{action 'addRotation'}}>Add Rotation</button>
 {{#if hasError}}
 <span>Error</span>

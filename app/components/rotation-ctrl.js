@@ -1,10 +1,14 @@
 import Ember from 'ember';
 
 export default Ember.Component.extend({
-  init: function() {
-    this._super();
-    this.showMatrix = true;
-  },
+  //myInit: function() {
+  //  this._super();
+  //  this.set('showMatrix', true);
+  //  this.set('editable', true);
+  //}.on('init'),
+  allowClose: true,
+  editable: true,
+  showMatrix: true,
   classNames: ['matrix'],
   actions: {
     close: function() {

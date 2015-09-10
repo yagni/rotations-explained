@@ -67,3 +67,7 @@ a,
 .hidden {
   display: none;
 }
+.viewport {
+  width: 333px;
+  display: inline-block;
+}

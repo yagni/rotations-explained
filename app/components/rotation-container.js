@@ -2,8 +2,8 @@ import Em from 'ember';
 
 export default Em.Component.extend({
   classNames: ["matrixcontainer"],
-  onlyOneMatrix: function() {
-    return (this.get("matrices").length === 1);
+  multipleMatrices: function() {
+    return (this.get("matrices").length !== 1);
   }.property("matrices.@each"),
   target: Em.computed.alias("targetObject"),
   slideIn: function() {
