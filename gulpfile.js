@@ -121,9 +121,18 @@ gulp.task('fonts', function () {
     .pipe($.size({title: 'fonts'}));
 });
 
+gulp.task('babel', function () {
+  return gulp.src(['app/**/*.js'])
+    .pipe(plugins.sourcemaps.init())
+    .pipe(plugins.babel())
+    .pipe(plugins.sourcemaps.write('.', {sourceRoot: '/app/' }))
+    .pipe(plugins.debug())
+    .pipe(gulp.dest(DIST));
+});
+
 // Scan your HTML for assets & optimize them
 gulp.task('html', function () {
-  var assets = $.useref.assets({searchPath: ['.tmp', 'app', 'dist']});
+  var assets = $.useref.assets({searchPath: ['.tmp', 'dist']});
 
   return gulp.src(['app/**/*.html', '!app/{elements,test}/**/*.html'])
     // Replace path for vulcanized assets
@@ -203,8 +212,19 @@ gulp.task('clean', function (cb) {
   del(['.tmp', 'dist'], cb);
 });
 
+// Transpile all JS to ES5.
+gulp.task('babel', function () {
+  return gulp.src(['app/**/*.{js,html}'])
+    .pipe($.sourcemaps.init())
+    .pipe($.if('*.html', $.crisper())) // Extract JS from .html files
+    .pipe($.if('*.js', $.babel()))
+    .pipe($.sourcemaps.write('.'))
+    .pipe(gulp.dest('.tmp/'))
+    .pipe(gulp.dest('dist/'));
+});
+
 // Watch files for changes & reload
-gulp.task('serve', ['styles', 'elements', 'images'], function () {
+gulp.task('serve', ['styles', 'elements', 'images', 'babel'], function () {
   browserSync({
     port: 5000,
     notify: false,
@@ -230,10 +250,10 @@ gulp.task('serve', ['styles', 'elements', 'images'], function () {
     }
   });
 
-  gulp.watch(['app/**/*.html'], reload);
+  gulp.watch(['app/**/*.html'], ['babel', reload]);
   gulp.watch(['app/styles/**/*.css'], ['styles', reload]);
   gulp.watch(['app/elements/**/*.css'], ['elements', reload]);
-  gulp.watch(['app/{scripts,elements}/**/{*.js,*.html}'], ['jshint']);
+  gulp.watch(['app/{scripts,elements}/**/{*.js}'], ['jshint', 'babel']);
   gulp.watch(['app/images/**/*'], reload);
 });
 
@@ -265,7 +285,7 @@ gulp.task('default', ['clean'], function (cb) {
   // Uncomment 'cache-config' after 'rename-index' if you are going to use service workers.
   runSequence(
     ['copy', 'styles'],
-    'elements',
+    ['elements', 'babel'],
     ['jshint', 'images', 'fonts', 'html'],
     'vulcanize','rename-index', // 'cache-config',
     cb);
