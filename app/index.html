@@ -42,6 +42,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
   <!-- Tile icon for Win8 (144x144) -->
   <meta name="msapplication-TileImage" content="images/touch/ms-touch-icon-144x144-precomposed.png">
 
+  <script src="http://cdnjs.cloudflare.com/ajax/libs/three.js/r71/three.js"></script>
+  <script src="vendor/TrackballControls.js"></script>
+
   <!-- build:css styles/main.css -->
   <link rel="stylesheet" href="styles/main.css">
   <!-- endbuild-->
@@ -86,7 +89,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           <!--</paper-menu>-->
       <!--</div>-->
       <paper-header-panel main mode="waterfall">
-
         <!-- Main Toolbar -->
         <paper-toolbar id="mainToolbar">
           <!--<paper-icon-button id="paperToggle" icon="menu" paper-drawer-toggle></paper-icon-button>-->
@@ -106,9 +108,13 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
         <!-- Main Content -->
         <div class="content">
+          <!-- TODO: Move into iron-pages when https://github.com/Polymer/polymer/issues/2430 gets fixed -->
+          <viewport-3d></viewport-3d>
           <iron-pages attr-for-selected="data-route" selected="{{route}}">
 
             <section data-route="home">
+
+
               <div class="horizontal layout">
                 <paper-material elevation="1">
                     <rotation-ctrl></rotation-ctrl>
