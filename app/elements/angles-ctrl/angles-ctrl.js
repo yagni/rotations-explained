@@ -11,19 +11,19 @@ export default Ember.Component.extend({
 
   firstLabel: function() {
     return this.get('selectedOrder')[0];
-  }.property("selectedOrder"),
+  }.property('selectedOrder'),
   firstAngle: function() {
 
   },
   secondLabel: function() {
     return this.get('selectedOrder')[1];
-  }.property("selectedOrder"),
+  }.property('selectedOrder'),
   secondAngle: function() {
 
   },
   thirdLabel: function() {
     return this.get('selectedOrder')[2];
-  }.property("selectedOrder"),
+  }.property('selectedOrder'),
   thirdAngle: function() {
 
   }
