@@ -1,3 +1,5 @@
+/*global THREE */
+
 (function () {
   Polymer({
     is: 'viewport-3d',
