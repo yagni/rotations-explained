@@ -110,7 +110,10 @@ gulp.task('copy', function () {
     .pipe($.rename('elements.vulcanized.html'))
     .pipe(gulp.dest('dist/elements'));
 
-  return merge(app, bower, elements, vulcanized, swBootstrap, swToolbox)
+  var vendor = gulp.src(['vendor/**/*.js'])
+    .pipe(gulp.dest('dist/vendor'));
+
+  return merge(app, bower, elements, vulcanized, swBootstrap, swToolbox, vendor)
     .pipe($.size({title: 'copy'}));
 });
 
@@ -119,15 +122,6 @@ gulp.task('fonts', function () {
   return gulp.src(['app/fonts/**'])
     .pipe(gulp.dest('dist/fonts'))
     .pipe($.size({title: 'fonts'}));
-});
-
-gulp.task('babel', function () {
-  return gulp.src(['app/**/*.js'])
-    .pipe(plugins.sourcemaps.init())
-    .pipe(plugins.babel())
-    .pipe(plugins.sourcemaps.write('.', {sourceRoot: '/app/' }))
-    .pipe(plugins.debug())
-    .pipe(gulp.dest(DIST));
 });
 
 // Scan your HTML for assets & optimize them
@@ -213,7 +207,7 @@ gulp.task('clean', function (cb) {
 });
 
 // Transpile all JS to ES5.
-gulp.task('babel', function () {
+gulp.task('js', function () {
   return gulp.src(['app/**/*.{js,html}'])
     .pipe($.sourcemaps.init())
     .pipe($.if('*.html', $.crisper())) // Extract JS from .html files
@@ -224,7 +218,7 @@ gulp.task('babel', function () {
 });
 
 // Watch files for changes & reload
-gulp.task('serve', ['styles', 'elements', 'images', 'babel'], function () {
+gulp.task('serve', ['styles', 'elements', 'images', 'js'], function () {
   browserSync({
     port: 5000,
     notify: false,
@@ -242,7 +236,7 @@ gulp.task('serve', ['styles', 'elements', 'images', 'babel'], function () {
     //       will present a certificate warning in the browser.
     // https: true,
     server: {
-      baseDir: ['.tmp', 'app'],
+      baseDir: ['.tmp','app'],
       middleware: [ historyApiFallback() ],
       routes: {
         '/bower_components': 'bower_components'
@@ -250,10 +244,11 @@ gulp.task('serve', ['styles', 'elements', 'images', 'babel'], function () {
     }
   });
 
-  gulp.watch(['app/**/*.html'], ['babel', reload]);
+  gulp.watch(['app/**/*.html'], ['js', reload]);
   gulp.watch(['app/styles/**/*.css'], ['styles', reload]);
   gulp.watch(['app/elements/**/*.css'], ['elements', reload]);
-  gulp.watch(['app/{scripts,elements}/**/{*.js}'], ['jshint', 'babel']);
+  gulp.watch(['{app/{scripts,elements}/**/{*.js}'], ['jshint', 'js', reload]);
+  gulp.watch(['{vendor/**/{*.js}'], ['jshint', 'js', reload]);
   gulp.watch(['app/images/**/*'], reload);
 });
 
@@ -285,7 +280,7 @@ gulp.task('default', ['clean'], function (cb) {
   // Uncomment 'cache-config' after 'rename-index' if you are going to use service workers.
   runSequence(
     ['copy', 'styles'],
-    ['elements', 'babel'],
+    ['elements', 'js'],
     ['jshint', 'images', 'fonts', 'html'],
     'vulcanize','rename-index', // 'cache-config',
     cb);
