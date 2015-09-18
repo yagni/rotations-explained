@@ -109,7 +109,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         <!-- Main Content -->
         <div class="content">
           <!-- TODO: Move into iron-pages when https://github.com/Polymer/polymer/issues/2430 gets fixed -->
-          <viewport-3d></viewport-3d>
+          <div class="layout horizontal center-justified">
+            <viewport-3d></viewport-3d>
+          </div>
           <iron-pages attr-for-selected="data-route" selected="{{route}}">
 
             <section data-route="home">

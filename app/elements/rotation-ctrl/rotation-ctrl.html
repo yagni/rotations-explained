@@ -11,41 +11,37 @@
     }
   </style>
   <template>
-    <div class="vertical layout">
-      <div class="horizontal layout">
-        <button>Toggle mode</button>
-        <div class="flex"/>
-        <button>x</button>
+    <div class="layout vertical">
+      <div class="layout horizontal start justified">
+        <paper-button raised on-tap="toggleView">Toggle mode</paper-button>
+        <paper-button raised>x</paper-button>
       </div>
-      <div id="matrix" style$="{{matrixVisibility}}">
-        <div class="vertical layout">
-          <div class="horizontal layout">
-            <div class="flex matrix-element"><input/></div><div class="flex matrix-element"><input/></div><div class="flex matrix-element"><input/></div><p></p>
-          </div>
-          <div class="horizontal layout">
-            <div class="flex"><input/></div> <div class="flex"><input/></div> <div class="flex"><input/></div><p></p>
-          </div>
-          <div class="horizontal layout">
-            <div class="flex"><input/></div> <div class="flex"><input/></div> <div class="flex"><input/></div><p></p>
+      <div class="layout horizontal">
+        <div id="matrix" hidden$="[[!showMatrix]]">
+          <div class="layout vertical">
+            <div class="layout horizontal justified">
+              <paper-input class="matrix-element" type="number"></paper-input><paper-input class="matrix-element" type="number"></paper-input><paper-input class="matrix-element" type="number"></paper-input><p></p>
+            </div>
+            <div class="layout horizontal justified">
+              <paper-input class="matrix-element" type="number"></paper-input><paper-input class="matrix-element" type="number"></paper-input><paper-input class="matrix-element" type="number"></paper-input><p></p>
+            </div>
+            <div class="layout horizontal justified">
+              <paper-input class="matrix-element" type="number"></paper-input><paper-input class="matrix-element" type="number"></paper-input><paper-input class="matrix-element" type="number"></paper-input><p></p>
+            </div>
           </div>
         </div>
       </div>
-      <div id="angles" style$="{{anglesVisibility}}">
-        <div class="vertical layout">
-          <div class="horizontal layout">
-            <div class="flex">X:<input/></div><div class="flex matrix-element"></div><p></p>
-          </div>
-          <div class="horizontal layout">
-            <div class="flex">Y:<input/></div>
-              <select>
-                <option value="xyz">XYZ</option>
-                <option value="zyz">ZYZ</option>
-              </select>
-            <div class="flex matrix-element"></div><p></p>
-          </div>
-          <div class="horizontal layout">
-            <div class="flex">Z:<input/></div><div class="flex matrix-element"></div><p></p>
-          </div>
+      <div id="angles" hidden$="[[showMatrix]]">
+        <div class="layout vertical flex">
+          <paper-dropdown-menu label="Axes">
+            <paper-menu class="dropdown-content" selected="0">
+              <paper-item value="xyz">XYZ</paper-item>
+              <paper-item value="zyz">ZYZ</paper-item>
+            </paper-menu>
+          </paper-dropdown-menu>
+          <paper-input label="X" type="number"></paper-input>
+          <paper-input label="Y" type="number"></paper-input>
+          <paper-input label="Z" type="number"></paper-input>
         </div>
       </div>
     </div>
