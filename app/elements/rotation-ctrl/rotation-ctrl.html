@@ -16,34 +16,8 @@
         <paper-button raised on-tap="toggleView">Toggle mode</paper-button>
         <paper-button raised>x</paper-button>
       </div>
-      <div class="layout horizontal">
-        <div id="matrix" hidden$="[[!showMatrix]]">
-          <div class="layout vertical">
-            <div class="layout horizontal justified">
-              <paper-input class="matrix-element" type="number"></paper-input><paper-input class="matrix-element" type="number"></paper-input><paper-input class="matrix-element" type="number"></paper-input><p></p>
-            </div>
-            <div class="layout horizontal justified">
-              <paper-input class="matrix-element" type="number"></paper-input><paper-input class="matrix-element" type="number"></paper-input><paper-input class="matrix-element" type="number"></paper-input><p></p>
-            </div>
-            <div class="layout horizontal justified">
-              <paper-input class="matrix-element" type="number"></paper-input><paper-input class="matrix-element" type="number"></paper-input><paper-input class="matrix-element" type="number"></paper-input><p></p>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div id="angles" hidden$="[[showMatrix]]">
-        <div class="layout vertical flex">
-          <paper-dropdown-menu label="Axes">
-            <paper-menu class="dropdown-content" selected="0">
-              <paper-item value="xyz">XYZ</paper-item>
-              <paper-item value="zyz">ZYZ</paper-item>
-            </paper-menu>
-          </paper-dropdown-menu>
-          <paper-input label="X" type="number"></paper-input>
-          <paper-input label="Y" type="number"></paper-input>
-          <paper-input label="Z" type="number"></paper-input>
-        </div>
-      </div>
+      <matrix-ctrl hidden$="[[!showMatrix]]"></matrix-ctrl>
+      <angles-ctrl hidden$="[[showMatrix]]"></angles-ctrl>
     </div>
   </template>
 </dom-module>

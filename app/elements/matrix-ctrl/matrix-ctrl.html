@@ -1,0 +1,26 @@
+<dom-module id="matrix-ctrl">
+  <style>
+    :host {
+      display: block;
+    }
+
+    @media (max-width: 600px) {
+      h1.paper-font-display1 {
+        font-size: 24px;
+      }
+    }
+  </style>
+  <template>
+    <div class="layout vertical">
+      <div class="layout horizontal justified">
+        <paper-input class="matrix-element" type="number"></paper-input><paper-input class="matrix-element" type="number"></paper-input><paper-input class="matrix-element" type="number"></paper-input><p></p>
+      </div>
+      <div class="layout horizontal justified">
+        <paper-input class="matrix-element" type="number"></paper-input><paper-input class="matrix-element" type="number"></paper-input><paper-input class="matrix-element" type="number"></paper-input><p></p>
+      </div>
+      <div class="layout horizontal justified">
+        <paper-input class="matrix-element" type="number"></paper-input><paper-input class="matrix-element" type="number"></paper-input><paper-input class="matrix-element" type="number"></paper-input><p></p>
+      </div>
+    </div>
+  </template>
+</dom-module>

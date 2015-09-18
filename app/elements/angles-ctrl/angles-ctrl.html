@@ -1,0 +1,27 @@
+<dom-module id="angles-ctrl">
+  <style>
+    :host {
+      display: block;
+    }
+
+    @media (max-width: 600px) {
+      h1.paper-font-display1 {
+        font-size: 24px;
+      }
+    }
+  </style>
+  <template>
+    <div class="layout vertical flex">
+      <paper-dropdown-menu label="Axes">
+        <paper-menu class="dropdown-content" selected="{{selectedAxes}}">
+          <template is="dom-repeat" items="[[axes]]">
+            <paper-item>[[item]]</paper-item>
+          </template>
+        </paper-menu>
+      </paper-dropdown-menu>
+      <paper-input label="[[selectedAxes.0]]" type="number">{{axisValues.0}}</paper-input>
+      <paper-input label="[[selectedAxes.1]]" type="number">{{axisValues.1}}</paper-input>
+      <paper-input label="[[selectedAxes.2]]" type="number">{{axisValues.2}}</paper-input>
+    </div>
+  </template>
+</dom-module>
