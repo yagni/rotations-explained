@@ -248,8 +248,8 @@ gulp.task('serve', ['styles', 'elements', 'images', 'js'], function () {
   gulp.watch(['app/**/*.html'], ['js', reload]);
   gulp.watch(['app/styles/**/*.css'], ['styles', reload]);
   gulp.watch(['app/elements/**/*.css'], ['elements', reload]);
-  gulp.watch(['{app/{scripts,elements}/**/{*.js}'], ['jshint', 'js', reload]);
-  gulp.watch(['{vendor/**/{*.js}'], ['jshint', 'js', reload]);
+  gulp.watch(['app/{scripts,elements}/**/*.js'], ['jshint', 'js', reload]);
+  gulp.watch(['vendor/**/*.js'], ['jshint', 'js', reload]);
   gulp.watch(['app/images/**/*'], reload);
 });
 
