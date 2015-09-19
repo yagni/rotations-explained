@@ -12,16 +12,17 @@
   </style>
   <template>
     <div class="layout vertical flex">
-      <paper-dropdown-menu label="Axes">
-        <paper-menu class="dropdown-content" selected="{{selectedAxes}}">
+      <paper-dropdown-menu label="Axes" id="axes">
+        <paper-menu class="dropdown-content" selected="{{selectedIndex}}">
           <template is="dom-repeat" items="[[axes]]">
             <paper-item>[[item]]</paper-item>
           </template>
         </paper-menu>
       </paper-dropdown-menu>
-      <paper-input label="[[selectedAxes.0]]" type="number">{{axisValues.0}}</paper-input>
-      <paper-input label="[[selectedAxes.1]]" type="number">{{axisValues.1}}</paper-input>
-      <paper-input label="[[selectedAxes.2]]" type="number">{{axisValues.2}}</paper-input>
+      <!-- TODO: Bug - fields seem to be linked when changing values via UI -->
+      <template is="dom-repeat" items="{{axisValues}}">
+        <paper-input label="[[arrayItem(selectedAxes.*, index)]]" type="number" value="{{item}}"></paper-input>
+      </template>
     </div>
   </template>
 </dom-module>

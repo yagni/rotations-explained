@@ -7,15 +7,38 @@
         value: ['XYZ', 'ZYZ', 'ZYX'],
       },
       selectedAxes: {
-        type: Object,
+        type: Array,
+        computed: 'computeAxes(selectedIndex)',
+        observer: '_axesChanged',
+      },
+      selectedIndex: {
+        type: Number,
+        value: 0,
       },
       axisValues: {
         type: Array,
         value: [0, 0, 0]
       }
     },
+
+    observers: [
+      '_anglesChanged(axisValues.*)'
+    ],
+
+    _anglesChanged() {
+      this.fire('angles-changed', this.axisValues);
+    },
+    _axesChanged() {
+      this.fire('axes-changed', this.axes[this.selectedIndex]);
+    },
+    // see https://www.polymer-project.org/1.0/docs/devguide/data-binding.html#array-binding
+    arrayItem(change, index) {
+      return change.base[index];
+    },
+    computeAxes() {
+      return this.axes[this.selectedIndex].split("");
+    },
     ready() {
-      this.selectedAxes = this.axes[0]; // TODO: Why doesn't this trigger?
     }
   });
 })();

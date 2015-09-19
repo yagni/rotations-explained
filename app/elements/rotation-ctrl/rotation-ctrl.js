@@ -7,10 +7,19 @@
         value: true
       },
     },
-    toggleView: function() {
+    anglesChanged(e) {
+      // e.detail
+    },
+    axesChanged(e) {
+      // e.detail
+    },
+    matrixChanged(e) {
+      // e.detail
+    },
+    toggleView() {
       this.showMatrix = !this.showMatrix;
     },
-    ready: function() {
+    ready() {
     }
   });
 })();

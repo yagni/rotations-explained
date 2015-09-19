@@ -11,16 +11,11 @@
     }
   </style>
   <template>
-    <div class="layout vertical">
-      <div class="layout horizontal justified">
-        <paper-input class="matrix-element" type="number"></paper-input><paper-input class="matrix-element" type="number"></paper-input><paper-input class="matrix-element" type="number"></paper-input><p></p>
-      </div>
-      <div class="layout horizontal justified">
-        <paper-input class="matrix-element" type="number"></paper-input><paper-input class="matrix-element" type="number"></paper-input><paper-input class="matrix-element" type="number"></paper-input><p></p>
-      </div>
-      <div class="layout horizontal justified">
-        <paper-input class="matrix-element" type="number"></paper-input><paper-input class="matrix-element" type="number"></paper-input><paper-input class="matrix-element" type="number"></paper-input><p></p>
-      </div>
+    <div class="layout horizontal wrap">
+      <!-- TODO: Figure out how to wrap these to make a 3x3 no matter what resolution -->
+      <template is="dom-repeat" items="{{values}}">
+        <paper-input class="matrix-element" maxlength="5" type="number" value="{{item}}"></paper-input>
+      </template>
     </div>
   </template>
 </dom-module>

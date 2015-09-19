@@ -16,8 +16,8 @@
         <paper-button raised on-tap="toggleView">Toggle mode</paper-button>
         <paper-button raised>x</paper-button>
       </div>
-      <matrix-ctrl hidden$="[[!showMatrix]]"></matrix-ctrl>
-      <angles-ctrl hidden$="[[showMatrix]]"></angles-ctrl>
+      <matrix-ctrl hidden$="[[!showMatrix]]" on-matrix-changed="matrixChanged"></matrix-ctrl>
+      <angles-ctrl hidden$="[[showMatrix]]" on-axes-changed="axesChanged" on-angles-changed="anglesChanged"></angles-ctrl>
     </div>
   </template>
 </dom-module>
