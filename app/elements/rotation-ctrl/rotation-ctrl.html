@@ -11,13 +11,16 @@
     }
   </style>
   <template>
-    <div class="layout vertical">
+    <div class="layout vertical" hidden$="[[!isActive]]">
       <div class="layout horizontal start justified">
         <paper-button raised on-tap="toggleView">Toggle mode</paper-button>
-        <paper-button raised>x</paper-button>
+        <paper-button raised on-tap="toggleActive">x</paper-button>
       </div>
       <matrix-ctrl hidden$="[[!showMatrix]]" on-matrix-changed="matrixChanged"></matrix-ctrl>
       <angles-ctrl hidden$="[[showMatrix]]" on-axes-changed="axesChanged" on-angles-changed="anglesChanged"></angles-ctrl>
+    </div>
+    <div hidden$="[[isActive]]" on-tap="toggleActive">
+      Hi!
     </div>
   </template>
 </dom-module>
