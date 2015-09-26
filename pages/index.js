@@ -5,14 +5,16 @@
  */
 
 import React, { Component } from 'react';
+import Viewport3D from '../components/Viewport3D/Viewport3D';
+import RotationContainer from '../components/RotationContainer/RotationContainer';
 
 export default class extends Component {
 
   render() {
     return (
       <div>
-        <h1>Home Page</h1>
-        <p>Coming soon.</p>
+        <Viewport3D/>
+        <RotationContainer/>
       </div>
     );
   }
