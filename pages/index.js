@@ -14,7 +14,7 @@ export default class extends Component {
     return (
       <div>
         <Viewport3D/>
-        <RotationContainer/>
+        <RotationContainer styles={[{width: 200}]}/>
       </div>
     );
   }

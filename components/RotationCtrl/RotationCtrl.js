@@ -1,10 +1,35 @@
 import React, { Component } from 'react';
+import RaisedButton from 'material-ui/lib/raised-button';
 import Paper from 'material-ui/lib/paper';
+import MatrixCtrl from '../MatrixCtrl/MatrixCtrl';
+import AnglesCtrl from '../AnglesCtrl/AnglesCtrl';
 
 export default class extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {showMatrix: true, isActive: true};
+  }
+
+  _toggleView = () => {
+    this.setState({showMatrix: !this.state.showMatrix});
+  }
+
+  _toggleActive = () => {
+    this.setState({isActive: !this.state.isActive});
+  }
+
   render() {
     return (
-      <Paper zDepth={3}>Content</Paper>
+      <Paper zDepth={3}>
+        {this.state.isActive ? <div>
+          <div>
+            <RaisedButton onTouchTap={this._toggleView}>Toggle mode</RaisedButton>
+            <RaisedButton onTouchTap={this._toggleActive}>x</RaisedButton>
+          </div>
+          <div>{this.state.showMatrix ? <MatrixCtrl onMatrixChanged="matrixChanged"/> : null}</div>
+          <div>{!this.state.showMatrix ? <AnglesCtrl onAxesChanged="axesChanged" onAnglesChanged="anglesChanged"/> : null}</div>
+        </div> : null }
+      </Paper>
     );
   }
 }
@@ -22,14 +47,6 @@ export default class extends Component {
 //  }
 //  </style>
 //  <template>
-//    <div class="layout vertical" hidden$="[[!isActive]]">
-//      <div class="layout horizontal start justified">
-//        <paper-button raised on-tap="toggleView">Toggle mode</paper-button>
-//        <paper-button raised on-tap="toggleActive">x</paper-button>
-//      </div>
-//      <matrix-ctrl hidden$="[[!showMatrix]]" on-matrix-changed="matrixChanged"></matrix-ctrl>
-//      <angles-ctrl hidden$="[[showMatrix]]" on-axes-changed="axesChanged" on-angles-changed="anglesChanged"></angles-ctrl>
-//    </div>
 //    <div hidden$="[[isActive]]" on-tap="toggleActive">
 //      Hi!
 //    </div>
@@ -39,16 +56,6 @@ export default class extends Component {
 //(function () {
 //  Polymer({
 //    is: 'rotation-ctrl',
-//    properties: {
-//      showMatrix: {
-//        type: Boolean,
-//        value: true
-//      },
-//      isActive: {
-//        type: Boolean,
-//        value: true
-//      },
-//    },
 //    anglesChanged(e) {
 //      // e.detail
 //    },

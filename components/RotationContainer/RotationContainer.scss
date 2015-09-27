@@ -1,0 +1,16 @@
+/**
+ * React Static Boilerplate
+ * https://github.com/koistya/react-static-boilerplate
+ * Copyright (c) Konstantin Tarkus (@koistya) | MIT license
+ */
+
+.RotationContainer {
+  width: 200px;
+  .div {
+    display: flex;
+    .RotationCtrl {
+      width: 200px;
+      margin: auto;
+    }
+  }
+}
