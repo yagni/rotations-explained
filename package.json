@@ -1,4 +1,9 @@
 {
+  "dependencies": {
+    "material-ui": "^0.11.1",
+    "three": "^0.72.0",
+    "react-tap-event-plugin": "^0.2.0"
+  },
   "devDependencies": {
     "autoprefixer": "^6.0.3",
     "babel": "^5.8.23",

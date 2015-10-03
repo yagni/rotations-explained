@@ -7,14 +7,23 @@
 import React, { Component } from 'react';
 import Viewport3D from '../components/Viewport3D/Viewport3D';
 import RotationContainer from '../components/RotationContainer/RotationContainer';
+import THREE from 'three';
 
 export default class extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {matrices: [new THREE.Matrix3(), new THREE.Matrix3()]};
+  }
+
+  _handleRotationsChanged = (matrices) => {
+    this.setState({matrices});
+  }
 
   render() {
     return (
       <div>
         <Viewport3D/>
-        <RotationContainer styles={[{width: 200}]}/>
+        <RotationContainer matrices={this.state.matrices} onRotationsChanged={this._handleRotationsChanged} styles={[{width: 200}]}/>
       </div>
     );
   }

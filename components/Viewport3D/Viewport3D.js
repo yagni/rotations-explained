@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
-/*global THREE */
+import THREE from 'three';
+import TrackballControls from '../../vendor/TrackballControls';
 
 export default class extends Component {
 
@@ -81,7 +82,6 @@ export default class extends Component {
 
     this.renderScenes();
     this.update();
-    //}, 1000);
   }
 
   renderScenes() {

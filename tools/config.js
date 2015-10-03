@@ -57,6 +57,7 @@ const config = {
         include: [
           path.resolve(__dirname, '../components'),
           path.resolve(__dirname, '../lib'),
+          path.resolve(__dirname, '../vendor'),
           path.resolve(__dirname, '../pages'),
           path.resolve(__dirname, '../app.js'),
           path.resolve(__dirname, '../config.js'),
@@ -116,6 +117,9 @@ const appConfig = merge({}, config, {
       ...config.module.loaders,
       {
         test: /\.scss$/,
+        include: [
+          path.resolve(__dirname, '../components'),
+        ],
         loaders: ['style-loader', 'css-loader', 'postcss-loader'],
       },
     ],

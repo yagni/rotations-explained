@@ -5,37 +5,47 @@ import TextField from 'material-ui/lib/text-field';
 export default class extends Component {
   constructor(props) {
     super(props);
-    this.axes = [{payload: 1, text: 'XYZ'}, {payload: 2, text: 'ZYZ'}, {payload: 3, text: 'ZYX'}];
-    this.state = {axes: 1, axisValues: [0, 0, 0]};
+    this.state = {angles: props.angles};
   }
 
-  _getAxisControls() {
+  _getAxisControls = () => {
     const elements = [];
-    const selectedAxes = this.axes.find((axis) => axis.payload === this.state.axes);
     for (let i = 0; i < 3; i++) {
-      elements.push(<TextField value={this.state.axisValues[i]} floatingLabelText={selectedAxes.text[i]} onChange={this._handleInputChange.bind(this, i)} />);
+      elements.push(<TextField value={this.state.angles[i]} type='number' floatingLabelText={this.props.axes[i]} onBlur={this._handleInputBlur} onChange={this._handleInputChange.bind(this, i)} />);
       elements.push(<p/>)
     }
     return elements;
   }
 
-  _handleAxesChanged = (event) => {
-    this.setState({axes: event.target.value});
+  _getAxesForDropDown = () => {
+    return this.props.availableAxes.map((value, index) => ({payload: (index + 1), text: value}));
   }
 
-  _handleInputChange(i, event) {
-    const newValues = this.state.axisValues.slice();
-    newValues[i] = event.target.value;
-    this.setState({axisValues: newValues});
+  _getCurrentAxes = () => {
+    return this.props.availableAxes.indexOf(this.props.axes) + 1;
+  }
+
+  _handleAxesChanged = (event) => {
+    this.props.onAxesChanged(event.target.value);
+  }
+
+  _handleInputChange = (i, event) => {
+    const newAngles = this.state.angles.slice();
+    newAngles[i] = event.target.value;
+    this.setState({angles: newAngles});
+  }
+
+  _handleInputBlur = () => {
+    this.props.onAnglesChanged(this.state.angles);
   }
 
   render() {
     return (
       <div>
-      <SelectField menuItems={this.axes} value={this.state.axes} floatingLabelText="Axes" onChange={this._handleAxesChanged}/>
-      <div>
-        {this._getAxisControls()}
-      </div>
+        <SelectField menuItems={this._getAxesForDropDown()} value={this._getCurrentAxes()} floatingLabelText="Axes" onChange={this._handleAxesChanged}/>
+        <div>
+          {this._getAxisControls()}
+        </div>
       </div>
     );
   }
