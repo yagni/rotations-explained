@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import SelectField from 'material-ui/lib/select-field';
 import TextField from 'material-ui/lib/text-field';
+import RadioButton from 'material-ui/lib/radio-button';
+import RadioButtonGroup from 'material-ui/lib/radio-button-group';
 
 export default class extends Component {
   constructor(props) {
@@ -8,13 +10,22 @@ export default class extends Component {
     this.state = {angles: props.angles};
   }
 
+  componentWillReceiveProps = (newProps) => {
+    this.setState({angles: newProps.angles});
+  }
+
   _getAxisControls = () => {
-    const elements = [];
-    for (let i = 0; i < 3; i++) {
-      elements.push(<TextField value={this.state.angles[i]} type='number' floatingLabelText={this.props.axes[i]} onBlur={this._handleInputBlur} onChange={this._handleInputChange.bind(this, i)} />);
-      elements.push(<p/>)
-    }
-    return elements;
+    return this.state.angles.map((value, i) =>
+      <div><TextField value={value} type='number' floatingLabelText={this.props.axes[i]} onBlur={this._handleInputBlur} onChange={this._handleInputChange.bind(this, i)} /><p/></div>
+    );
+  }
+
+  _getUnitsRadioButtons = () => {
+    return this.props.availableUnits.map((unit) => {
+      const label = unit;
+      label[0] = label[0].toUpperCase();
+      return <RadioButton value={unit} label={label} style={{marginBottom:16}} />;
+    });
   }
 
   _getAxesForDropDown = () => {
@@ -26,13 +37,17 @@ export default class extends Component {
   }
 
   _handleAxesChanged = (event) => {
-    this.props.onAxesChanged(event.target.value);
+    this.props.onAxesChanged(this.props.availableAxes[event.target.value-1]);
   }
 
   _handleInputChange = (i, event) => {
     const newAngles = this.state.angles.slice();
     newAngles[i] = event.target.value;
     this.setState({angles: newAngles});
+  }
+
+  _handleUnitsChange = (event, selectedValue) => {
+    this.props.onUnitsChanged(selectedValue);
   }
 
   _handleInputBlur = () => {
@@ -42,7 +57,10 @@ export default class extends Component {
   render() {
     return (
       <div>
-        <SelectField menuItems={this._getAxesForDropDown()} value={this._getCurrentAxes()} floatingLabelText="Axes" onChange={this._handleAxesChanged}/>
+        <SelectField menuItems={this._getAxesForDropDown()} value={this._getCurrentAxes()} floatingLabelText="Rotation Order" onChange={this._handleAxesChanged}/>
+        <RadioButtonGroup name="units" valueSelected={this.props.units} onChange={this._handleUnitsChange}>
+          {this._getUnitsRadioButtons()}
+        </RadioButtonGroup>
         <div>
           {this._getAxisControls()}
         </div>
@@ -50,77 +68,3 @@ export default class extends Component {
     );
   }
 }
-
-//(function () {
-//  Polymer({
-//    is: 'angles-ctrl',
-//    properties: {
-//      axes: {
-//        type: Array,
-//        value: ['XYZ', 'ZYZ', 'ZYX'],
-//      },
-//      selectedAxes: {
-//        type: Array,
-//        computed: 'computeAxes(selectedIndex)',
-//        observer: '_axesChanged',
-//      },
-//      selectedIndex: {
-//        type: Number,
-//        value: 0,
-//      },
-//      axisValues: {
-//        type: Array,
-//        value: [0, 0, 0]
-//      }
-//    },
-//
-//    observers: [
-//      '_anglesChanged(axisValues.*)'
-//    ],
-//
-//    _anglesChanged() {
-//      this.fire('angles-changed', this.axisValues);
-//    },
-//    _axesChanged() {
-//      this.fire('axes-changed', this.axes[this.selectedIndex]);
-//    },
-//    // see https://www.polymer-project.org/1.0/docs/devguide/data-binding.html#array-binding
-//    arrayItem(change, index) {
-//      return change.base[index];
-//    },
-//    computeAxes() {
-//      return this.axes[this.selectedIndex].split("");
-//    },
-//    ready() {
-//    }
-//  });
-//})();
-
-//<dom-module id="angles-ctrl">
-//  <style>
-//    :host {
-//    display: block;
-//  }
-//
-//    @media (max-width: 600px) {
-//    h1.paper-font-display1 {
-//    font-size: 24px;
-//  }
-//  }
-//  </style>
-//  <template>
-//    <div class="layout vertical flex">
-//      <paper-dropdown-menu label="Axes" id="axes">
-//        <paper-menu class="dropdown-content" selected="{{selectedIndex}}">
-//          <template is="dom-repeat" items="[[axes]]">
-//            <paper-item>[[item]]</paper-item>
-//          </template>
-//        </paper-menu>
-//      </paper-dropdown-menu>
-//      <!-- TODO: Bug - fields seem to be linked when changing values via UI -->
-//      <template is="dom-repeat" items="{{axisValues}}">
-//        <paper-input label="[[arrayItem(selectedAxes.*, index)]]" type="number" value="{{item}}"></paper-input>
-//      </template>
-//    </div>
-//  </template>
-//</dom-module>
