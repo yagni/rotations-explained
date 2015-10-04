@@ -50,17 +50,13 @@ export default class extends Component {
                                      m4.elements[2], m4.elements[6], m4.elements[10]));
   }
 
-  _handleAxesChanged = (axes) => {
-    this.setState({axes});
-  }
+  _handleAxesChanged = (axes) => this.setState({axes});
 
-  _handleMatrixChanged = (matrix) => {
-    this.props.onRotationChanged(matrix);
-  }
+  _handleMatrixChanged = (matrix) => this.props.onRotationChanged(matrix);
 
-  _handleAngleUnitsChanged = (units) => {
-    this.setState({angleUnits: units});
-  }
+  _handleAngleUnitsChanged = (units) => this.setState({angleUnits: units});
+
+  _reset = () => this._handleMatrixChanged(new THREE.Matrix3());
 
   render() {
     return (
@@ -68,6 +64,7 @@ export default class extends Component {
         <div>
           <div>
             <RaisedButton onTouchTap={this._toggleView}>Toggle mode</RaisedButton>
+            <RaisedButton onTouchTap={this._reset}>Reset to identity</RaisedButton>
           </div>
           <div>{this.state.showMatrix ? <MatrixCtrl onMatrixChanged={this._handleMatrixChanged} matrix={this.props.matrix} /> : null}</div>
           <div>{!this.state.showMatrix ? <AnglesCtrl onAxesChanged={this._handleAxesChanged} onAnglesChanged={this._handleAnglesChanged} availableAxes={THREE.Euler.RotationOrders} axes={this.state.axes} angles={this._getAngles()} availableUnits={this.availableUnits} units={this.state.angleUnits} onUnitsChanged={this._handleAngleUnitsChanged} /> : null}</div>
@@ -76,45 +73,3 @@ export default class extends Component {
     );
   }
 }
-
-//<dom-module id="rotation-ctrl">
-//  <style>
-//    :host {
-//    display: block;
-//  }
-//
-//    @media (max-width: 600px) {
-//    h1.paper-font-display1 {
-//    font-size: 24px;
-//  }
-//  }
-//  </style>
-//  <template>
-//    <div hidden$="[[isActive]]" on-tap="toggleActive">
-//      Hi!
-//    </div>
-//  </template>
-//</dom-module>
-
-//(function () {
-//  Polymer({
-//    is: 'rotation-ctrl',
-//    anglesChanged(e) {
-//      // e.detail
-//    },
-//    axesChanged(e) {
-//      // e.detail
-//    },
-//    toggleActive() {
-//      this.isActive = !this.isActive;
-//    },
-//    matrixChanged(e) {
-//      // e.detail
-//    },
-//    toggleView() {
-//      this.showMatrix = !this.showMatrix;
-//    },
-//    ready() {
-//    }
-//  });
-//})();
