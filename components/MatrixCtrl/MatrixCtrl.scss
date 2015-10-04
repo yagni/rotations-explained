@@ -4,6 +4,6 @@
  * Copyright (c) Konstantin Tarkus (@koistya) | MIT license
  */
 
-.RotationContainer {
-  width: 800px;
+.MatrixCtrl {
+  input { width: 10px } /* can't seem to pass to TextField directly */
 }

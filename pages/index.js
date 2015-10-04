@@ -22,8 +22,8 @@ export default class extends Component {
   render() {
     return (
       <div>
-        <Viewport3D/>
-        <RotationContainer matrices={this.state.matrices} onRotationsChanged={this._handleRotationsChanged} styles={[{width: 200}]}/>
+        <Viewport3D/> (<span style={{color:'red'}}>X</span><span style={{color:'green'}}>Y</span><span style={{color:'blue'}}>Z</span>)
+        <RotationContainer matrices={this.state.matrices} onRotationsChanged={this._handleRotationsChanged} style={{width: 200}}/>
       </div>
     );
   }

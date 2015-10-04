@@ -4,6 +4,9 @@
  * Copyright (c) Konstantin Tarkus (@koistya) | MIT license
  */
 
-.RotationContainer {
-  width: 800px;
+.RotationCtrl {
+  width: 300px;
+  display: inline-block;
+  margin-right: 100px;
+  .innerButton { margin-right: 10px }
 }

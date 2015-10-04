@@ -3,6 +3,7 @@ import SelectField from 'material-ui/lib/select-field';
 import TextField from 'material-ui/lib/text-field';
 import RadioButton from 'material-ui/lib/radio-button';
 import RadioButtonGroup from 'material-ui/lib/radio-button-group';
+import './AnglesCtrl.scss';
 
 export default class extends Component {
   constructor(props) {

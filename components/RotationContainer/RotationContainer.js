@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import RotationCtrl from '../RotationCtrl/RotationCtrl';
+import './RotationContainer.scss';
 
 export default class extends Component {
   _handleMatrixChanged(index, matrix) {
@@ -18,7 +19,7 @@ export default class extends Component {
 
   render() {
     return (
-      <div>
+      <div className="RotationContainer">
         {this._getRotationCtrls()}
       </div>
     );

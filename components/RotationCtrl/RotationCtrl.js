@@ -3,6 +3,7 @@ import RaisedButton from 'material-ui/lib/raised-button';
 import Paper from 'material-ui/lib/paper';
 import MatrixCtrl from '../MatrixCtrl/MatrixCtrl';
 import AnglesCtrl from '../AnglesCtrl/AnglesCtrl';
+import './RotationCtrl.scss';
 import THREE from 'three';
 
 export default class extends Component {
@@ -43,14 +44,17 @@ export default class extends Component {
   _handleAnglesChanged = (angles) => {
     const m4 = new THREE.Matrix4();
     angles = angles.map(this._assureRadians);
-    m4.makeRotationFromEuler(new THREE.Euler(...angles, this.state.axes));
+    m4.makeRotationFromEuler(new THREE.Euler(angles[this.state.axes.indexOf('X')], angles[this.state.axes.indexOf('Y')], angles[this.state.axes.indexOf('Z')], this.state.axes));
     const m3 = new THREE.Matrix3();
     this._handleMatrixChanged(m3.set(m4.elements[0], m4.elements[4], m4.elements[8],
                                      m4.elements[1], m4.elements[5], m4.elements[9],
                                      m4.elements[2], m4.elements[6], m4.elements[10]));
   }
 
-  _handleAxesChanged = (axes) => this.setState({axes});
+  _handleAxesChanged = (axes) => {
+    const currentAngles = this._getAngles();
+    this.setState({axes}, () => this._handleAnglesChanged(currentAngles));
+  }
 
   _handleMatrixChanged = (matrix) => this.props.onRotationChanged(matrix);
 
@@ -60,16 +64,16 @@ export default class extends Component {
 
   render() {
     return (
-      <Paper zDepth={3}>
-        <div>
+      <div className="RotationCtrl">
+        <Paper zDepth={3}>
           <div>
-            <RaisedButton onTouchTap={this._toggleView}>Toggle mode</RaisedButton>
+            <RaisedButton className="innerButton" onTouchTap={this._toggleView}>Toggle mode</RaisedButton>
             <RaisedButton onTouchTap={this._reset}>Reset to identity</RaisedButton>
           </div>
           <div>{this.state.showMatrix ? <MatrixCtrl onMatrixChanged={this._handleMatrixChanged} matrix={this.props.matrix} /> : null}</div>
           <div>{!this.state.showMatrix ? <AnglesCtrl onAxesChanged={this._handleAxesChanged} onAnglesChanged={this._handleAnglesChanged} availableAxes={THREE.Euler.RotationOrders} axes={this.state.axes} angles={this._getAngles()} availableUnits={this.availableUnits} units={this.state.angleUnits} onUnitsChanged={this._handleAngleUnitsChanged} /> : null}</div>
-        </div>
-      </Paper>
+        </Paper>
+      </div>
     );
   }
 }
