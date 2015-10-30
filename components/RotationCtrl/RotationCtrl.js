@@ -3,6 +3,7 @@ import RaisedButton from 'material-ui/lib/raised-button';
 import Paper from 'material-ui/lib/paper';
 import MatrixCtrl from '../MatrixCtrl/MatrixCtrl';
 import AnglesCtrl from '../AnglesCtrl/AnglesCtrl';
+import { convertMatrix3ToMatrix4 } from '../../lib/helpers';
 import './RotationCtrl.scss';
 import THREE from 'three';
 
@@ -18,12 +19,8 @@ export default class extends Component {
   }
 
   _getAngles = () => {
-    const m4 = new THREE.Matrix4();
     const m3 = this.props.matrix;
-    m4.set(m3.elements[0], m3.elements[3], m3.elements[6], 0,
-           m3.elements[1], m3.elements[4], m3.elements[7], 0,
-           m3.elements[2], m3.elements[5], m3.elements[8], 0,
-           0, 0, 0, 1);
+    const m4 = convertMatrix3ToMatrix4(m3);
     const angles = new THREE.Euler(0,0,0).setFromRotationMatrix(m4, this.state.axes);
     return this._normalizeUnits(this.state.axes.split('').map(axis => angles[axis.toLowerCase()]));
   }

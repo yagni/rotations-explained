@@ -2,66 +2,50 @@ import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 import THREE from 'three';
 import TrackballControls from '../../vendor/TrackballControls';
+import ColladaLoader from '../../vendor/ColladaLoader';
 
 export default class extends Component {
 
   componentDidMount() {
+    this.loader = new ColladaLoader();
+    this.loader.options.centerGeometry = true;
+    this.loader.options.upAxis = 'Z';
+    this.loader.load( 'human.dae', collada => this.init(collada.scene));
+  }
+
+  init(model) {
     // For some reason, clientWidth/Height is 0 within this handler, so the
     // TrackballControls don't get set up properly. Do a dirty hack and delay the
     //this.async(function() {
-    var color = {
-      primary: '#e74c3c',
-      secondary: '#2ecc71',
-      tertiary: '#3498db'
-    };
 
     this.scene = new THREE.Scene();
-    var xArrow = new THREE.ArrowHelper(
-      new THREE.Vector3(1, 0, 0),
-      new THREE.Vector3(0, 0, 0),
-      2.5,
-      new THREE.Color(color.primary).getHex(),
-      0.5,
-      0.5
-    );
-    this.scene.add(xArrow);
+    this.rotatableObjects = new THREE.Object3D();
+    this.rotatableObjects.add(...this.createAxisArrows());
+    this.scene.add(...this.drawArc(0x0000ff, .25 * Math.PI));
+    this.scene.add(...this.drawArc(0x00ff00, .25 * Math.PI, .5 * Math.PI, .25 * Math.PI, 0));
+    //objects = objects.concat(drawArc(scene, 0x0000ff, .25 * Math.PI, .25 * Math.PI));
 
-    var yArrow = new THREE.ArrowHelper(
-      new THREE.Vector3(0, 1, 0),
-      new THREE.Vector3(0, 0, 0),
-      2.5,
-      new THREE.Color(color.secondary).getHex(),
-      0.5,
-      0.5
-    );
-    this.scene.add(yArrow);
+    this.scene.add(...this.addAxisLines(1, 2, 3));
 
-    var zArrow = new THREE.ArrowHelper(
-      new THREE.Vector3(0, 0, 1),
-      new THREE.Vector3(0, 0, 0),
-      2.5,
-      new THREE.Color(color.tertiary).getHex(),
-      0.5,
-      0.5
-    );
-    this.scene.add(zArrow);
+    this.scene.add(this.rotatableObjects);
+
+    model.up = new THREE.Vector3(0,0,1);
+    this.rotatableObjects.add(model);
 
     this.backgroundScene = new THREE.Scene();
     var size = 10;
     var step = 1;
-    var axisOffset = {x: 0, y: 0, z: 0};
     var gridHelper = new THREE.GridHelper(size, step);
-    gridHelper.position.x = axisOffset.x;
-    gridHelper.position.z = axisOffset.y;
-    gridHelper.position.y = axisOffset.z;
     gridHelper.setColors(0x555555, 0xeeeeee);
+    gridHelper.rotation.x = 1.57;
     this.backgroundScene.add(gridHelper);
 
     var pixelWidth = 333, pixelHeight = 333;
     this.camera = new THREE.PerspectiveCamera(75, pixelWidth / pixelHeight, 0.1, 1000);
-    this.camera.position.x = -16;
-    this.camera.position.y = 7;
-    this.camera.position.z = 25;
+    this.camera.position.x = 20;
+    this.camera.position.y = -12;
+    this.camera.position.z = 9;
+    this.camera.up = new THREE.Vector3(0, 0, 1);
     this.camera.setLens(75);
     //this.camera.matrixAutoUpdate = false;
     this.renderer = new THREE.WebGLRenderer({canvas: ReactDOM.findDOMNode(this.refs.viewport), alpha: false, antialias: true});
@@ -71,17 +55,25 @@ export default class extends Component {
 
     this.controls = new THREE.TrackballControls(this.camera, this.renderer.domElement);
     this.controls.staticMoving = true;
+    this.controls.noPan = true;
     //var logicUpdate = this.doLogicUpdate;
     //this.controls.addEventListener('start', function() { logicUpdate = true; });
     //this.controls.addEventListener('end', function() { logicUpdate = false; });
     this.controls.addEventListener('change', this.renderScenes.bind(this));
 
     this.controls.dynamicDampingFactor = 0.4;
-    this.controls.noPan = true;
-    this.controls.noRoll = true;
+    //this.controls.noPan = true;
+    //this.controls.noRoll = true;
 
     this.renderScenes();
+    this.built = true;
     this.update();
+  }
+
+  setRotations() {
+    this.rotatableObjects.setRotationFromMatrix(this.props.matrix);
+    //this.rotatableObjects.rotation.z += .25 * Math.PI;
+    //this.rotatableObjects.rotation.y -= .25 * Math.PI;
   }
 
   renderScenes() {
@@ -162,7 +154,119 @@ export default class extends Component {
     //})
   }
 
+  createAxisArrows() {
+    const color = {
+      primary: '#e74c3c',
+      secondary: '#2ecc71',
+      tertiary: '#3498db'
+    };
+
+    const xArrow = new THREE.ArrowHelper(
+      new THREE.Vector3(1, 0, 0),
+      new THREE.Vector3(0, 0, 0),
+      2.5,
+      new THREE.Color(color.primary).getHex(),
+      0.5,
+      0.5
+    );
+
+    const yArrow = new THREE.ArrowHelper(
+      new THREE.Vector3(0, 1, 0),
+      new THREE.Vector3(0, 0, 0),
+      2.5,
+      new THREE.Color(color.secondary).getHex(),
+      0.5,
+      0.5
+    );
+
+    const zArrow = new THREE.ArrowHelper(
+      new THREE.Vector3(0, 0, 1),
+      new THREE.Vector3(0, 0, 0),
+      2.5,
+      new THREE.Color(color.tertiary).getHex(),
+      0.5,
+      0.5
+    );
+    return [xArrow, yArrow, zArrow];
+  }
+
+  // angle is in radians
+  drawArc(color, angle, xRotation = 0, yRotation = 0, zRotation = 0) {
+    const arcObjects = [];
+    const radius = 2;
+    const curve = new THREE.EllipseCurve(
+      0,  0,              // ax, aY
+      radius, radius,           // xRadius, yRadius
+      0,  angle,          // aStartAngle, aEndAngle
+      false,              // aClockwise
+      0                   // aRotation
+    );
+
+    const points = curve.getPoints(10);
+    points.push(new THREE.Vector2(0, 0));
+    const shape = new THREE.Shape();
+    shape.fromPoints(points);
+    const geometry = new THREE.ShapeGeometry(shape);
+    const material = new THREE.MeshBasicMaterial({color, side: THREE.DoubleSide, transparent: true, opacity: .5});
+
+    // Create the final Object3d to add to the scene
+    var mesh = new THREE.Mesh( geometry, material );
+
+    arcObjects.push(mesh);
+
+    const angleCurve = new THREE.EllipseCurve(
+      0,  0,              // ax, aY
+      radius * .75, radius * .75,               // xRadius, yRadius
+      0,  angle,  // aStartAngle, aEndAngle
+      false,              // aClockwise
+      0                   // aRotation
+    );
+
+    const anglePoints = angleCurve.getSpacedPoints( 10 );
+    const anglePath = new THREE.Path();
+
+    const angleLine = new THREE.Line( anglePath.createGeometry( anglePoints ), new THREE.LineBasicMaterial( { color : 0x330000 } ) );
+    arcObjects.push(angleLine);
+
+    for (const obj of arcObjects) {
+      obj.rotation.order = 'XYZ';
+      obj.rotation.x = xRotation;
+      obj.rotation.y = yRotation;
+      obj.rotation.z = zRotation;
+    }
+
+    return arcObjects;
+  }
+
+  addAxisLines(x, y, z) {
+    const lineObjects = [];
+    var geometry = new THREE.Geometry();
+    geometry.vertices.push(
+      new THREE.Vector3( 0, 0, 0 ),
+      new THREE.Vector3( x, 0, 0 ),
+      new THREE.Vector3( x, y, 0 ),
+      new THREE.Vector3( x, y, z )
+    );
+    geometry.computeLineDistances();
+
+    var material = new THREE.LineDashedMaterial( { color: 0x000000, dashSize: .1, gapSize: .05 } );
+
+    var line = new THREE.Line( geometry, material );
+    lineObjects.push(line);
+
+    var pointGeometry = new THREE.BoxGeometry( .05, .05, .05 );
+    pointGeometry.translate(x, y, z);
+    var pointMaterial = new THREE.MeshBasicMaterial( {color: 0x00ff00} );
+    var cube = new THREE.Mesh( pointGeometry, pointMaterial );
+    lineObjects.push(cube);
+    return lineObjects;
+  }
+
   render() {
+    if (this.built) {
+      this.setRotations();
+      this.renderScenes();
+    }
     return (
       <canvas ref="viewport" styles="width: 333px; height: 333px;"></canvas>
     );
