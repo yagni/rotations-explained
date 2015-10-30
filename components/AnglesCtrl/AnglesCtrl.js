@@ -23,8 +23,7 @@ export default class extends Component {
 
   _getUnitsRadioButtons = () => {
     return this.props.availableUnits.map((unit) => {
-      const label = unit;
-      label[0] = label[0].toUpperCase();
+      const label = unit[0].toUpperCase() + unit.slice(1);
       return <RadioButton value={unit} label={label} style={{marginBottom:16}} />;
     });
   }

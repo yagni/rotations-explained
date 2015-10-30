@@ -21,11 +21,11 @@ export default class extends Component {
     this.scene = new THREE.Scene();
     this.rotatableObjects = new THREE.Object3D();
     this.rotatableObjects.add(...this.createAxisArrows());
-    this.scene.add(...this.drawArc(0x0000ff, .25 * Math.PI));
-    this.scene.add(...this.drawArc(0x00ff00, .25 * Math.PI, .5 * Math.PI, .25 * Math.PI, 0));
+
+    this.drawArcs();
     //objects = objects.concat(drawArc(scene, 0x0000ff, .25 * Math.PI, .25 * Math.PI));
 
-    this.scene.add(...this.addAxisLines(1, 2, 3));
+    //this.scene.add(...this.addAxisLines(1, 2, 3));
 
     this.scene.add(this.rotatableObjects);
 
@@ -66,14 +66,30 @@ export default class extends Component {
     //this.controls.noRoll = true;
 
     this.renderScenes();
-    this.built = true;
+    this.initialized = true;
     this.update();
+  }
+
+  drawArcs() {
+    const arcs = [];
+    const rotation = this.rotatableObjects.rotation;
+    if (rotation.z !== 0) {
+      arcs.push(...this.drawArc(0x0000ff, rotation.z));
+    }
+    if (rotation.y !== 0) {
+      arcs.push(...this.drawArc(0x00ff00, rotation.y, -.5 * Math.PI, -rotation.z, 0));
+    }
+    if (this.arcs) {
+      this.scene.remove(...this.arcs);
+    }
+    if (arcs.length > 0) {
+      this.scene.add(...arcs);
+      this.arcs = arcs;
+    }
   }
 
   setRotations() {
     this.rotatableObjects.setRotationFromMatrix(this.props.matrix);
-    //this.rotatableObjects.rotation.z += .25 * Math.PI;
-    //this.rotatableObjects.rotation.y -= .25 * Math.PI;
   }
 
   renderScenes() {
@@ -263,8 +279,9 @@ export default class extends Component {
   }
 
   render() {
-    if (this.built) {
+    if (this.initialized) {
       this.setRotations();
+      this.drawArcs();
       this.renderScenes();
     }
     return (
