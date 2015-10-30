@@ -101,6 +101,7 @@ const appConfig = merge({}, config, {
   output: {
     filename: 'app.js',
   },
+  devtool: DEBUG ? 'cheap-module-eval-source-map' : false,
   plugins: [
     ...config.plugins,
     ...(DEBUG ? [] : [
@@ -151,6 +152,9 @@ const pagesConfig = merge({}, config, {
       ...config.module.loaders,
       {
         test: /\.scss$/,
+        include: [
+          path.resolve(__dirname, '../components'),
+        ],
         loaders: ['css-loader', 'postcss-loader'],
       },
     ],
